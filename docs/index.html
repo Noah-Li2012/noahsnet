@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noah Li's 个人网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-color: black;
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .personal-info {
+            margin-bottom: 20px;
+        }
+        .personal-info a {
+            color: #00aced;
+        }
+        .age-section {
+            margin-top: 20px;
+        }
+        .note-section {
+            margin-top: 20px;
+        }
+        #rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .video-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 320px;
+            height: 180px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
 
+<canvas id="rain"></canvas>
+
+<header>
+    <h1>Noah Li's 个人网站</h1>
+</header>
+
+<div class="content">
+    <div class="personal-info">
+        <h2>名字: Noah Li</h2>
+        <p>爱好: 编程</p>
+        <p>B站账号: <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">Noah2012号-编程</a></p>
+    </div>
+
+    <div class="age-section">
+        <h2>我的年龄: <span id="age">正在计算...</span></h2>
+        <h2>————————————————
+    </div>
+    <div class="note-section">
+        <p>记得来B站跟我点赞 ;) <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">点我访问B站</a></p>
+    </div>
+</div>
+
+<div class="video-container" id="random-video-container">
+    <!-- 随机视频会加载在这里 -->
+</div>
+
+<script>
+    const canvas = document.getElementById('rain');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
+    const drops = [];
+
+    function createDrop() {
+        const char = characters[Math.floor(Math.random() * characters.length)];
+        const x = Math.floor(Math.random() * canvas.width);
+        const y = -Math.random() * canvas.height;
+        const speed = Math.random() * 5 + 2;
+        drops.push({ char, x, y, speed });
+    }
+
+    function updateRain() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "lime";
+
+        for (const drop of drops) {
+            drop.y += drop.speed;
+            if (drop.y > canvas.height) {
+                drop.y = -20;
+            }
+            ctx.fillText(drop.char, drop.x, drop.y);
+        }
+    }
+
+    function animate() {
+        createDrop();
+        updateRain();
+        requestAnimationFrame(animate);
+    }
+
+    ctx.font = '18px monospace';
+    animate();
+
+    function calculateAge() {
+        const birthDate = new Date(2012, 11, 27);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        document.getElementById("age").textContent = age;
+    }
+
+    calculateAge();
+
+    function getRandomBilibiliVideo() {
+        const videoUrls = [
+            'https://www.bilibili.com/video/BV1Sj4re4E11/?spm_id_from=333.999.0.0',
+            'https://www.bilibili.com/video/BV1y94He8Ewr/?spm_id_from=333.999.0.0',
+            'https://www.bilibili.com/video/BV1iPc2eDEg2/?spm_id_from=333.999.0.0',
+            'https://www.bilibili.com/video/BV1AfzmYjExG/?spm_id_from=333.999.0.0'
+        ];
+        const randomVideoUrl = videoUrls[Math.floor(Math.random() * videoUrls.length)];
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://player.bilibili.com/player.html?bvid=${randomVideoUrl.split('/')[4]}&page=1`;
+        iframe.frameBorder = "0";
+        iframe.allow = "autoplay; fullscreen";
+        document.getElementById("random-video-container").appendChild(iframe);
+    }
+
+    getRandomBilibiliVideo();
+</script>
+
+</body>
+</html>
