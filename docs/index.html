@@ -20,20 +20,20 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1; /* 将代码雨放到背景层 */
+            z-index: -1;
         }
         header {
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
             text-align: center;
             padding: 20px;
-            position: relative; /* 确保 header 在前景 */
-            z-index: 1; /* 提高 header 的层级 */
+            position: relative;
+            z-index: 1;
         }
         .content {
             padding: 20px;
-            position: relative; /* 确保内容区域在前景 */
-            z-index: 1; /* 提高内容区域的层级 */
+            position: relative;
+            z-index: 1;
         }
         .personal-info {
             margin-bottom: 20px;
@@ -57,7 +57,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1; /* 确保视频容器在前景 */
+            z-index: 1;
         }
         iframe {
             width: 100%;
@@ -84,12 +84,12 @@
     <div class="note-section">
         <p>记得来B站跟我点赞😉 <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">点我访问B站</a></p>
     </div>
+    <p>我做的网站 <a href="https://noah-li2012.github.io/crawler-for-free" target="_blank">免费网页版爬虫</a></p>
 </div>
 
 <div class="video-container" id="random-video-container">
 </div>
 
-<p>我做的网站 <a href="https://noah-li2012.github.io/mywebsides" target="_blank">点我</a></p>
 
 <script>
     const canvas = document.getElementById('rain');
@@ -130,19 +130,6 @@
     ctx.font = '18px monospace';
     animate();
 
-    function calculateAge() {
-        const birthDate = new Date(2012, 11, 27);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        document.getElementById("age").textContent = age;
-    }
-
-    calculateAge();
-
     function getRandomBilibiliVideo() {
         const videoUrls = [
             'https://www.bilibili.com/video/BV1Sj4re4E11/?spm_id_from=333.999.0.0',
@@ -153,12 +140,15 @@
 
         const randomVideoUrl = videoUrls[Math.floor(Math.random() * videoUrls.length)];
 
+        // 提取 bvid
         const bvid = randomVideoUrl.split('/')[4].split('?')[0];
 
+        // 创建 iframe
         const iframe = document.createElement('iframe');
         iframe.src = `https://player.bilibili.com/player.html?bvid=${bvid}&page=1`;
         iframe.frameBorder = "0";
         iframe.allow = "autoplay; fullscreen";
+        iframe.allowfullscreen = true;
         document.getElementById("random-video-container").appendChild(iframe);
     }
 
