@@ -11,27 +11,7 @@
             padding: 0;
             color: white;
             background-color: black;
-        }
-        header {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .content {
-            padding: 20px;
-        }
-        .personal-info {
-            margin-bottom: 20px;
-        }
-        .personal-info a {
-            color: #00aced;
-        }
-        .age-section {
-            margin-top: 20px;
-        }
-        .note-section {
-            margin-top: 20px;
+            position: relative;
         }
         #rain {
             position: fixed;
@@ -40,7 +20,29 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: -1; /* 将代码雨放到背景层 */
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative; /* 确保 header 在前景 */
+            z-index: 1; /* 提高 header 的层级 */
+        }
+        .content {
+            padding: 20px;
+            position: relative; /* 确保内容区域在前景 */
+            z-index: 1; /* 提高内容区域的层级 */
+        }
+        .personal-info {
+            margin-bottom: 20px;
+        }
+        .personal-info a {
+            color: #00aced;
+        }
+        .note-section {
+            margin-top: 20px;
         }
         .video-container {
             position: fixed;
@@ -55,6 +57,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1; /* 确保视频容器在前景 */
         }
         iframe {
             width: 100%;
@@ -73,23 +76,20 @@
 
 <div class="content">
     <div class="personal-info">
-        <h2>名字: Noah Li — 浩闻</h2>
-        <p>爱好: 编程</p>
-        <p>B站账号: <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">Noah2012号-编程</a></p>
+        <h2>名字: Noah Li — 浩闻🤔</h2>
+        <p>爱好: 编程,人工智能😆</p>
+        <p>B站账号: <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">Noah2012号-编程🥲</a></p>
     </div>
-
-    <div class="age-section">
-        <h2>我的年龄: <span id="age">正在计算...</span></h2>
-        <h2>————————————————
-    </div>
+    <h1>——————————————</h1>
     <div class="note-section">
-        <p>记得来B站跟我点赞 ;) <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">点我访问B站</a></p>
+        <p>记得来B站跟我点赞😉 <a href="https://space.bilibili.com/3546630999509229?spm_id_from=333.337.0.0" target="_blank">点我访问B站</a></p>
     </div>
 </div>
 
 <div class="video-container" id="random-video-container">
-    <!-- 随机视频会加载在这里 -->
 </div>
+
+<p>我做的网站 <a href="https://noah-li2012.github.io/mywebsides" target="_blank">点我</a></p>
 
 <script>
     const canvas = document.getElementById('rain');
@@ -150,9 +150,13 @@
             'https://www.bilibili.com/video/BV1iPc2eDEg2/?spm_id_from=333.999.0.0',
             'https://www.bilibili.com/video/BV1AfzmYjExG/?spm_id_from=333.999.0.0'
         ];
+
         const randomVideoUrl = videoUrls[Math.floor(Math.random() * videoUrls.length)];
+
+        const bvid = randomVideoUrl.split('/')[4].split('?')[0];
+
         const iframe = document.createElement('iframe');
-        iframe.src = `https://player.bilibili.com/player.html?bvid=${randomVideoUrl.split('/')[4]}&page=1`;
+        iframe.src = `https://player.bilibili.com/player.html?bvid=${bvid}&page=1`;
         iframe.frameBorder = "0";
         iframe.allow = "autoplay; fullscreen";
         document.getElementById("random-video-container").appendChild(iframe);
